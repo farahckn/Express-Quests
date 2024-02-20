@@ -87,12 +87,12 @@ const getUsersById = (req, res) => {
 };
 
 const postMovie = (req, res) => {
-  const { firstname, lastname, email, city, language } = req.body;
+  const { title, director, year, color, duration } = req.body;
 
   database
     .query(
-      "INSERT INTO movies(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
-      [firstname, lastname, email, city, language]
+      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [title, director, year, color, duration]
     )
     .then(([result]) => {
       res.status(201).send({ id: result.insertId });
@@ -119,6 +119,49 @@ const postUsers = (req, res) => {
       res.sendStatus(500);
     });
 };
+
+const updateMovies = (req,res) => {
+  const id = parseInt(req.params.id);
+  const { title, director, year, color, duration} = req.body;
+
+  database
+  .query("update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
+  [title, director, year, color, duration, id]
+  )
+  .then(([result]) => {
+    if (result.affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500);
+  });
+};
+
+const updateUsers = (req,res) => {
+  const id = parseInt(req.params.id);
+  const {firstname, lastname, email, city, language} = req.body;
+
+  database
+  .query("update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
+  [firstname, lastname, email, city, language, id]
+  )
+  .then(([result]) => {
+    if (result.affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500);
+  });
+};
+
 module.exports = {
   getMovies,
   getMovieById,
@@ -126,4 +169,6 @@ module.exports = {
   getUsersById,
   postMovie,
   postUsers,
+  updateMovies,
+  updateUsers,
 };
