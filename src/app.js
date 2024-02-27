@@ -7,11 +7,13 @@ const movieControllers = require("./controllers/movieControllers");
 
 app.get("/api/movies", movieControllers.getMovies);
 app.get("/api/movies/:id", movieControllers.getMovieById);
-app.get("/api/users", movieControllers.getUsers)
-app.get("/api/users/:id", movieControllers.getUsersById)
+app.get("/api/users", movieControllers.getUsers);
+app.get("/api/users/:id", movieControllers.getUsersById);
 app.post("/api/movies", movieControllers.postMovie);
-app.post("/api/users", movieControllers.postUsers)
+app.post("/api/users", movieControllers.postUsers);
 app.put("/api/movies/:id", movieControllers.updateMovies);
 app.put("/api/users/:id", movieControllers.updateUsers);
+app.delete("/api/movies/:id", movieControllers.deleteMovie);
+app.delete("/api/movies/:id", movieControllers.deleteUsers);
 
 module.exports = app;

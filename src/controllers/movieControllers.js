@@ -45,45 +45,45 @@ const getMovieById = (req, res) => {
   database
     .query(`select * FROM movies WHERE id = ${id}`)
     .then(([movies]) => {
-      if (movies[0] != null){
-      res.json(movies[0]);
+      if (movies[0] != null) {
+        res.json(movies[0]);
       } else {
         res.sendStatus(404);
       }
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500)
+      res.sendStatus(500);
     });
 };
 
 const getUsers = (req, res) => {
   database
-  .query("select * FROM users")
-  .then(([users]) => {
-    res.json(users);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500);
-  });
+    .query("select * FROM users")
+    .then(([users]) => {
+      res.json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
 const getUsersById = (req, res) => {
   const id = parseInt(req.params.id);
   database
-  .query(`SELECT * FROM users WHERE id = ${id}`)
-  .then(([users]) => {
-    if (users[0] != null){
-    res.json(users[0]);
-    } else {
-      res.sendStatus(404);
-    }
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500)
-  });
+    .query(`SELECT * FROM users WHERE id = ${id}`)
+    .then(([users]) => {
+      if (users[0] != null) {
+        res.json(users[0]);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
 const postMovie = (req, res) => {
@@ -120,46 +120,84 @@ const postUsers = (req, res) => {
     });
 };
 
-const updateMovies = (req,res) => {
+const updateMovies = (req, res) => {
   const id = parseInt(req.params.id);
-  const { title, director, year, color, duration} = req.body;
+  const { title, director, year, color, duration } = req.body;
 
   database
-  .query("update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
-  [title, director, year, color, duration, id]
-  )
-  .then(([result]) => {
-    if (result.affectedRows === 0) {
-      res.sendStatus(404);
-    } else {
-      res.sendStatus(204);
-    }
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500);
-  });
+    .query(
+      "update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
+      [title, director, year, color, duration, id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
-const updateUsers = (req,res) => {
+const updateUsers = (req, res) => {
   const id = parseInt(req.params.id);
-  const {firstname, lastname, email, city, language} = req.body;
+  const { firstname, lastname, email, city, language } = req.body;
 
   database
-  .query("update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
-  [firstname, lastname, email, city, language, id]
-  )
-  .then(([result]) => {
-    if (result.affectedRows === 0) {
-      res.sendStatus(404);
-    } else {
-      res.sendStatus(204);
-    }
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500);
-  });
+    .query(
+      "update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
+      [firstname, lastname, email, city, language, id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const deleteMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query("delete from movies where id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const deleteUsers = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query("delete from users where id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
 module.exports = {
@@ -171,4 +209,6 @@ module.exports = {
   postUsers,
   updateMovies,
   updateUsers,
+  deleteMovie,
+  deleteUsers,
 };
